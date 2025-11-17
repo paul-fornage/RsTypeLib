@@ -116,7 +116,7 @@ struct Option{
     bool operator!=(const Option& other) const { return !operator==(other); }
 
 private:
-    explicit Option() = default;
+    explicit Option(): tag(OptionTag::None){};
 };
 
 

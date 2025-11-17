@@ -23,7 +23,6 @@ public:
     ResultTag tag;
 
 private:
-    // Explicitly define constructors and destructor since we're using union with non-trivial types
     explicit Result() : tag(ResultTag::Err) {}
 public:
     ~Result()  {
