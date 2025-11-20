@@ -101,10 +101,16 @@ struct Option{
         return std::move(data);
     }
 
-    static Option Some(T value){
+    template <class U>
+    static Option Some(U&& value) {
+        static_assert(
+                std::is_constructible<T, U&&>::value,
+                "T must be constructible from U&&"
+            );
+
         Option opt;
         opt.tag = OptionTag::Some;
-        new (&opt.data) T(std::move(value));
+        new (&opt.data) T(std::forward<U>(value));
         return opt;
     }
 
