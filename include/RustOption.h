@@ -1,6 +1,3 @@
-//
-// Created by pfornage on 11/11/25.
-//
 
 #ifndef RSTYPELIB_RUSTOPTION_H
 #define RSTYPELIB_RUSTOPTION_H
@@ -50,9 +47,9 @@ struct Option{
 
     // Move constructor
     Option(Option&& other) noexcept : tag(other.tag) {
-            if (tag == OptionTag::Some) {
-                new (&data) T(std::move(other.data));
-            }
+        if (tag == OptionTag::Some) {
+            new (&data) T(std::move(other.data));
+        }
     }
 
     // Copy assignment
