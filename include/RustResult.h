@@ -6,7 +6,7 @@
 #define RSTYPELIB_RUSTRESULT_H
 
 #include <utility>
-
+#include <new>
 
 enum class ResultTag : bool{
     Ok = true,

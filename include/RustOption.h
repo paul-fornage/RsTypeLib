@@ -101,14 +101,14 @@ struct Option{
         return std::move(data);
     }
 
-    static Option<T> Some(T value){
+    static Option Some(T value){
         Option opt;
         opt.tag = OptionTag::Some;
         new (&opt.data) T(std::move(value));
         return opt;
     }
 
-    static Option<T> None(){
+    static Option None(){
         Option opt;
         opt.tag = OptionTag::None;
         return opt;
