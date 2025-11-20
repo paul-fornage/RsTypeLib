@@ -13,19 +13,19 @@ enum class Error : u16{
 };
 
 using FooResult = Result<i32, Error>;
-FooResult foo(const Option<i32 const*>& opt);
+FooResult foo(const Option<const i32*>& opt);
 void print_foo_result(const FooResult& result);
 
-// using OptInt = Option<i32 const*>;
+// using OptInt = Option<const i32*>;
 
 void run_basic_tests(){
     const i32 my_number = NUMBER_SIZE_LIMIT - 1;
     const i32 my_big_number = NUMBER_SIZE_LIMIT + 1;
 
-    const auto none = Option<i32 const*>::None();
-    const auto some_nullptr = Option<i32 const*>::Some(nullptr);
-    const auto some_number = Option<i32 const*>::Some(&my_number);
-    const auto some_big_number = Option<i32 const*>::Some(&my_big_number);
+    const auto none = Option<const i32*>::None();
+    const auto some_nullptr = Option<const i32*>::Some(nullptr);
+    const auto some_number = Option<const i32*>::Some(&my_number);
+    const auto some_big_number = Option<const i32*>::Some(&my_big_number);
 
     const i32* unwrap_none_or_my_number = none.unwrap_or(&my_number);
     TEST_ASSERT(unwrap_none_or_my_number == &my_number);
@@ -50,7 +50,7 @@ void run_basic_tests(){
 }
 
 
-FooResult foo(const Option<i32 const*>& opt){
+FooResult foo(const Option<const i32*>& opt){
     switch(opt.tag){
         case OptionTag::Some: {
             if(opt.data == nullptr){
