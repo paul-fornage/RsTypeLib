@@ -4,7 +4,7 @@
 #include <RustNumberTypes.h>
 #include <stdio.h>
 
-static constexpr usize NUMBER_SIZE_LIMIT = 1000000;
+static constexpr i32 NUMBER_SIZE_LIMIT = 1000000;
 
 enum class Error : u16{
     NullPtr,
@@ -12,20 +12,26 @@ enum class Error : u16{
     OptionWasNone
 };
 
-using FooResult = Result<i64, Error>;
-FooResult foo(const Option<i64 const*>& opt);
+using FooResult = Result<i32, Error>;
+FooResult foo(const Option<i32 const*>& opt);
 void print_foo_result(const FooResult& result);
 
-// using OptInt = Option<i64 const*>;
+// using OptInt = Option<i32 const*>;
 
 void run_basic_tests(){
-    const i64 my_number = NUMBER_SIZE_LIMIT - 1;
-    const i64 my_big_number = NUMBER_SIZE_LIMIT + 1;
+    const i32 my_number = NUMBER_SIZE_LIMIT - 1;
+    const i32 my_big_number = NUMBER_SIZE_LIMIT + 1;
 
-    const auto none = Option<i64 const*>::None();
-    const auto some_nullptr = Option<i64 const*>::Some(nullptr);
-    const auto some_number = Option<i64 const*>::Some(&my_number);
-    const auto some_big_number = Option<i64 const*>::Some(&my_big_number);
+    const auto none = Option<i32 const*>::None();
+    const auto some_nullptr = Option<i32 const*>::Some(nullptr);
+    const auto some_number = Option<i32 const*>::Some(&my_number);
+    const auto some_big_number = Option<i32 const*>::Some(&my_big_number);
+
+    const i32* unwrap_none_or_my_number = none.unwrap_or(&my_number);
+    TEST_ASSERT(unwrap_none_or_my_number == &my_number);
+
+    const i32* unwrap_some_or_my_number = some_number.unwrap_or(&my_big_number);
+    TEST_ASSERT(unwrap_some_or_my_number == &my_number);
 
     const auto result_1 = foo(none);
     const auto result_2 = foo(some_nullptr);
@@ -44,13 +50,13 @@ void run_basic_tests(){
 }
 
 
-FooResult foo(const Option<i64 const*>& opt){
+FooResult foo(const Option<i32 const*>& opt){
     switch(opt.tag){
         case OptionTag::Some: {
             if(opt.data == nullptr){
                 return FooResult::Err(Error::NullPtr);
             }
-            const i64 number = *opt.data;
+            const i32 number = *opt.data;
             if(number >= NUMBER_SIZE_LIMIT){
                 return FooResult::Err(Error::NumberTooBig);
             }
@@ -75,7 +81,7 @@ static const char* error_to_str(const Error error){
 void print_foo_result(const FooResult& result){
     switch(result.tag){
         case ResultTag::Ok: {
-            printf("Ok: %ld\n", result.value);
+            printf("Ok: %d\n", result.value);
             break;
         }
         case ResultTag::Err: {

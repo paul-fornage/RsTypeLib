@@ -32,6 +32,22 @@ struct Option{
         }
     }
 
+    T* as_mut_ptr() const {
+        if(static_cast<bool>(tag)){
+            return &data;
+        } else {
+            return nullptr;
+        }
+    }
+
+    T& unwrap_or(T& none_default) & {
+        return is_some() ? data : none_default;
+    }
+
+    const T& unwrap_or(const T& none_default) const & {
+        return is_some() ? data : none_default;
+    }
+
     ~Option() {
         if (tag == OptionTag::Some) {
             data.~T();
