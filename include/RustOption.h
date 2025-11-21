@@ -11,6 +11,10 @@ enum class OptionTag: bool{
     None = false
 };
 
+namespace OptionCtorTag {
+    struct StaticNone{};
+}
+
 template<typename T>
 struct Option{
 
@@ -119,6 +123,16 @@ struct Option{
         opt.tag = OptionTag::None;
         return opt;
     }
+
+
+    template<
+        typename CtorTag,
+        typename std::enable_if<
+            std::is_same<CtorTag, OptionCtorTag::StaticNone>::value,
+            int
+        >::type = 0
+    >
+    explicit Option(CtorTag _ctor_tag) : tag(OptionTag::None) {}
 
     // Equality operator
     bool operator==(const Option& other) const {

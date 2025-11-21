@@ -11,9 +11,11 @@ enum class Error : u16{
     OptionWasNone
 };
 
+Option<u32> static_none_option(OptionCtorTag::StaticNone{});
+
 using FooResult = Result<i64, Error>;
 FooResult foo(Option<i64 const*> opt);
-void print_foo_result(FooResult result);
+void print_foo_result(const FooResult& result);
 
 // using OptInt = Option<i64 const*>;
 
@@ -58,7 +60,7 @@ FooResult foo(Option<i64 const*> opt){
 
 
 
-static const char* error_to_str(Error error){
+static const char* error_to_str(const Error error){
     switch(error){
         case Error::NullPtr: { return "NullPtr"; }
         case Error::NumberTooBig: { return "NumberTooBig"; }
@@ -66,7 +68,7 @@ static const char* error_to_str(Error error){
     }
 }
 
-void print_foo_result(FooResult result){
+void print_foo_result(const FooResult& result){
     switch(result.tag){
         case ResultTag::Ok: {
             printf("Ok: %ld\n", result.value);

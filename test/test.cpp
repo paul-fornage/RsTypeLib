@@ -12,6 +12,8 @@ enum class Error : u16{
     OptionWasNone
 };
 
+Option<u32> static_none_option(OptionCtorTag::StaticNone{});
+
 using FooResult = Result<i32, Error>;
 FooResult foo(const Option<const i32*>& opt);
 void print_foo_result(const FooResult& result);
@@ -32,6 +34,10 @@ void run_basic_tests(){
 
     const i32* unwrap_some_or_my_number = some_number.unwrap_or(&my_big_number);
     TEST_ASSERT(unwrap_some_or_my_number == &my_number);
+
+    TEST_ASSERT(!static_none_option.is_some());
+    static_none_option = Option<u32>::Some(1);
+    TEST_ASSERT(static_none_option.is_some());
 
     const auto result_1 = foo(none);
     const auto result_2 = foo(some_nullptr);
